@@ -1,0 +1,43 @@
+var isPi = require('detect-rpi');
+var matrixLib = "./sim/rpi-led-matrix";
+if(isPi()) {
+    matrixLib = "rpi-led-matrix";
+}
+
+const { LedMatrix, GpioMapping } = require(matrixLib);
+const { Jimp } = require('jimp');
+const JimpR = require('jimp');
+
+const matrix = new LedMatrix({
+    rows: 32,
+    cols: 64,
+    chainLength: 2,
+    hardwareMapping: GpioMapping.AdafruitHat,
+    disableHardwarePulsing: true,
+    gpioSlowdown: 2,
+}).clear();
+
+async function displayImage() {
+    const image = await Jimp.read('v1.png');
+    image.resize({w: 64, h: 32});
+    image.flip({vertical: true, horizontal: false}); // Flip vertically
+
+    const imageM = image.clone().flip({vertical: false, horizontal: true}); // Mirror horizontally
+
+    function drawImage(img, offsetX) {
+        for (let y = 0; y < 32; y++) {
+            for (let x = 0; x < 64; x++) {
+                const { r, g, b } = JimpR.intToRGBA(img.getPixelColor(x, y));
+                matrix.fgColor({ r, g, b }).setPixel(x + offsetX, y);
+            }
+        }
+    }
+
+    setInterval(() => {
+        drawImage(image, 0);
+        drawImage(imageM, 64);
+        matrix.sync();
+    }, 20);
+}
+
+displayImage().catch(console.error);

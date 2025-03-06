@@ -1,0 +1,18 @@
+{
+  "name": "visor-display",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "private": true,
+  "dependencies": {
+    "canvas": "^3.1.0",
+    "detect-rpi": "^1.5.0",
+    "electron": "^35.0.0",
+    "jimp": "^1.6.0",
+    "rpi-led-matrix": "^1.15.0"
+  }
+}

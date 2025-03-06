@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electron App</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            background-color: #222;
+        }
+        #matrix-container {
+            transform:  scaleY(-1); /* irl display is rotated 180deg */
+            display: grid;
+            gap: -1px; /* Adjust the gap between dots */
+            background-color: black;
+        }
+        .dot {
+            width: 3px; /* Size of the dot (pixel) */
+            height: 3px;
+            border-radius: 50%;
+            background-color: var(--col); /* Default color */
+        }
+    </style>
+</head>
+<body>
+
+<div id="matrix-container"></div>
+
+<script>
+    const { ipcRenderer } = require('electron');
+
+    // Store the last update time
+    let lastUpdateTime = 0;
+    const updateInterval = 1000 / 30; // 30 frames per second (in milliseconds)
+
+    // Store the dot elements for later color updates
+    let dots = [];
+    let width = 0;
+    let height = 0;
+
+    // Listen for the message sent from the main process
+    ipcRenderer.on('fromMain', (event, data) => {
+        console.log('Received data from main process:', data);
+
+        // Update the matrix display from image data
+        updateMatrix(data);
+    });
+
+    // Create a matrix-like grid based on the image (this runs once)
+    function createMatrix(imageSrc) {
+        // Create a temporary image to get its dimensions
+        const img = new Image();
+        img.src = imageSrc;
+
+        img.onload = function () {
+            width = img.width;
+            height = img.height;
+
+            // Adjust the size of the dots based on the image resolution
+            const dotSize = 5; // Size of each dot (pixel)
+
+            // Set up the grid for the matrix container
+            const matrixContainer = document.getElementById('matrix-container');
+            matrixContainer.style.gridTemplateColumns = `repeat(${width}, ${dotSize + 2}px)`; // Adjust for gap
+            matrixContainer.style.gridTemplateRows = `repeat(${height}, ${dotSize + 2}px)`; // Adjust for gap
+            matrixContainer.innerHTML = ''; // Clear any previous content
+
+            // Create dots for each pixel and store them in the `dots` array
+            const ctx = document.createElement('canvas').getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            // Create the dots once based on image size and store them for updates
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const pixel = ctx.getImageData(x, y, 1, 1).data; // Get pixel data (RGBA)
+                    const r = pixel[0];
+                    const g = pixel[1];
+                    const b = pixel[2];
+
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    dot.style.setProperty("--col", `rgb(${r}, ${g}, ${b})`); // Set initial color
+                    matrixContainer.appendChild(dot);
+
+                    dots.push(dot); // Store each dot for future updates
+                }
+            }
+        };
+    }
+
+    // Update the color of the matrix based on new image data
+    function updateMatrix(imageSrc) {
+        // Create a temporary image to get its new color data
+        const img = new Image();
+        img.src = imageSrc;
+
+        img.onload = function () {
+            // Get the new pixel data from the image
+            const ctx = document.createElement('canvas').getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            // Update the dots with new colors
+            const dotSize = 5; // Size of each dot (pixel)
+            const matrixContainer = document.getElementById('matrix-container');
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const pixel = ctx.getImageData(x, y, 1, 1).data; // Get pixel data (RGBA)
+                    const r = pixel[0];
+                    const g = pixel[1];
+                    const b = pixel[2];
+
+                    const index = y * width + x; // Calculate the corresponding dot index
+                    const dot = dots[index]; // Get the corresponding dot element
+                    dot.style.setProperty("--col", `rgb(${r}, ${g}, ${b})`); // Update color
+                }
+            }
+        };
+    }
+
+    // Initialize the matrix on first run
+    ipcRenderer.once('fromMain', (event, data) => {
+        createMatrix(data);
+    });
+</script>
+
+</body>
+</html>
