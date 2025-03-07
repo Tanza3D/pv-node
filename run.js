@@ -45,13 +45,13 @@ const matrix = new LedMatrix({
 var draw = null;
 process.on('SIGINT', function () {
     console.log("Cleaning screen properly :3");
+    clearInterval(draw);
     matrix.fgColor({r: 1, g: 0, b: 0})
     matrix.clear();
     matrix.sync();
-    clearInterval(draw);
     setTimeout(() => {
         process.exit();
-    }, 500)
+    }, 5000)
 });
 
 
