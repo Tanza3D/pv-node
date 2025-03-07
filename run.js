@@ -44,7 +44,7 @@ const matrix = new LedMatrix({
 
 var draw = null;
 process.on('SIGINT', function () {
-    console.log("Cleaning screen properly :3");
+    console.log("Cleaning screen properly :3\n\n");
     clearInterval(draw);
     matrix.fgColor({r: 1, g: 0, b: 0})
     matrix.clear();
