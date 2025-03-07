@@ -27,7 +27,7 @@ if (isPi()) {
     console.log("Running as root!");
 }
 
-const {LedMatrix, GpioMapping} = require("rpi-led-matrix");
+const {LedMatrix, GpioMapping} = require(matrixLib);
 const {Jimp} = require('jimp');
 const JimpR = require('jimp');
 
@@ -42,12 +42,13 @@ const matrix = new LedMatrix({
     gpioSlowdown: 4
 }).clear();
 
-
+var draw = null;
 process.on('SIGINT', function () {
     console.log("Cleaning screen properly :3");
     matrix.fgColor({r: 1, g: 0, b: 0})
     matrix.clear();
     matrix.sync();
+    clearInterval(draw);
     setTimeout(() => {
         process.exit();
     }, 500)
@@ -69,12 +70,13 @@ async function displayImage() {
             }
         }
     }
-
-    setInterval(() => {
+    function drawScreen() {
         drawImage(image, 0);
         drawImage(imageM, 64);
         matrix.sync();
-    }, 20);
+    }
+
+    draw = setInterval(drawScreen, 20);
 }
 
 displayImage().catch(console.error);
