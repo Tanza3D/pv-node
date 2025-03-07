@@ -86,7 +86,6 @@ async function displayImage() {
 
 
     var preprocessedGradient = preprocessGradient(gradientMap, 65, 33);
-    console.log(preprocessedGradient);
 
     function setPixel(x, y, a) {
         y = (32 - y); // displays are flipped IRL

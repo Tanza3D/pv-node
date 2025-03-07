@@ -2,7 +2,7 @@ const fs = require("fs");
 
 class LCD {
     static onPi = false;
-    static serialPath = "/dev/serial/by-id/usb-Raspberry_Pi_Pico_2_084E8A99FC91F64A-if00";
+    static serialPath = "/dev/ttyACM0";
 
     static SetText(text) {
         if (this.onPi) {
