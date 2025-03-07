@@ -17,8 +17,7 @@ const matrix = new LedMatrix({
     disableHardwarePulsing: true
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
-    gpioSlowdown: 4,
-    disableHardwarePulsing: true
+    gpioSlowdown: 4
 }).clear();
 
 async function displayImage() {
