@@ -36,8 +36,7 @@ const matrix = new LedMatrix({
     rows: 32,
     cols: 64,
     chainLength: 2,
-    hardwareMapping: GpioMapping.AdafruitHat,
-    disableHardwarePulsing: true
+    hardwareMapping: GpioMapping.AdafruitHat
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
     gpioSlowdown: 4
