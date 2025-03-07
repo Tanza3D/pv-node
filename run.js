@@ -51,7 +51,7 @@ process.on('SIGINT', function () {
     matrix.sync();
     setTimeout(() => {
         process.exit();
-    }, 5000)
+    }, 500)
 });
 
 
