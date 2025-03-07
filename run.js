@@ -2,6 +2,29 @@ var isPi = require('detect-rpi');
 var matrixLib = "./sim/rpi-led-matrix";
 if(isPi()) {
     matrixLib = "rpi-led-matrix";
+
+    const { execSync } = require("child_process");
+    const { argv, env } = require("process");
+
+    function isRunningAsRoot() {
+        return process.getuid && process.getuid() === 0;
+    }
+
+    if (!isRunningAsRoot()) {
+        console.log("Restarting with sudo...");
+        const command = `sudo ${process.execPath} ${argv.slice(1).join(" ")}`;
+
+        try {
+            execSync(command, { stdio: "inherit", env });
+        } catch (error) {
+            console.error("Failed to restart with sudo:", error);
+            process.exit(1);
+        }
+
+        process.exit(0);
+    }
+
+    console.log("Running as root!");
 }
 
 const { LedMatrix, GpioMapping } = require(matrixLib);
