@@ -1,0 +1,1 @@
+use `npm i --omit optional` to install on a raspberry pi, this'll exclude the packages used for the *LED Matrix and LCD Display Simulator* (`electron` and `canvas`), as I'd atleast hope if you're running this on a pi you'd have the actual hardware.
