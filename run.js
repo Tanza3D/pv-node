@@ -9,12 +9,16 @@ const { Jimp } = require('jimp');
 const JimpR = require('jimp');
 
 const matrix = new LedMatrix({
+    ...LedMatrix.defaultMatrixOptions(),
     rows: 32,
     cols: 64,
     chainLength: 2,
     hardwareMapping: GpioMapping.AdafruitHat,
-    disableHardwarePulsing: true,
-    gpioSlowdown: 2,
+    disableHardwarePulsing: true
+}, {
+    ...LedMatrix.defaultRuntimeOptions(),
+    gpioSlowdown: 4,
+    disableHardwarePulsing: true
 }).clear();
 
 async function displayImage() {

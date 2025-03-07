@@ -4,7 +4,13 @@ const {Electron} = require("./electron");
 
 class LedMatrix {
     electron;
-    constructor(options) {
+    static defaultMatrixOptions() {
+        return {};
+    }
+    static defaultRuntimeOptions() {
+        return {};
+    }
+    constructor(options, options2) {
         this.rows = options.rows || 32;
         this.cols = options.cols || 64;
         this.chainLength = options.chainLength || 1;
