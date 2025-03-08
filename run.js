@@ -127,7 +127,7 @@ async function displayImage() {
         matrix.sync();
     }
 
-    draw = setInterval(drawScreen, 20);
+    draw = setInterval(drawScreen, 5);
 }
 
 displayImage().catch(console.error);
