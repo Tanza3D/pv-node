@@ -42,10 +42,12 @@ const matrix = new LedMatrix({
     rows: 32,
     cols: 64,
     chainLength: 2,
-    hardwareMapping: GpioMapping.AdafruitHat
+    hardwareMapping: GpioMapping.AdafruitHat,
+    disableHardwarePulsing: false
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
-    gpioSlowdown: 4
+    gpioSlowdown: 4,
+    disableHardwarePulsing: false
 }).clear();
 
 var draw = null;
@@ -127,7 +129,7 @@ async function displayImage() {
         matrix.sync();
     }
 
-    draw = setInterval(drawScreen, 5);
+    draw = setInterval(drawScreen, 20); // that'll do
 }
 
 displayImage().catch(console.error);
