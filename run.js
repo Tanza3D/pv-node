@@ -92,43 +92,40 @@ async function displayImage() {
     function setPixel(x, y, a) {
         y = (32 - y); // displays are flipped IRL
 
-        var col = preprocessedGradient[y][x];
+        var colx = preprocessedGradient[y][x];
 
-        col.r = col.r*a;
-        col.g = col.g*a;
-        col.b = col.b*a;
+        var col = {
+            r: colx.r*a,
+            g: colx.g*a,
+            b: colx.b*a
+        }
 
         matrix.fgColor(col).setPixel(x, y);
         // the width is 128x32, but we actually have two 64x32 panels.
         // this function only ever takes 64x32 X/Y coords, we need to mirror to other side
-        matrix.fgColor(col).setPixel(128 - x, y);
+        matrix.setPixel(128 - x, y);
     }
     function drawImage(img, offsetX) {
         if (img == null) {
             return;
         }
 
-        // Directly get pixel data from the image (assuming it's an array or a similar structure)
         const pixels = img.bitmap.data;  // Using Jimp's bitmap data for faster access
         const width = img.bitmap.width;
         const height = img.bitmap.height;
 
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                // Get pixel index in bitmap data (4 bytes per pixel: RGBA)
                 const idx = (y * width + x) * 4;
-                const r = pixels[idx];
-                const g = pixels[idx + 1];
-                const b = pixels[idx + 2];
                 const a = pixels[idx + 3];
 
-                // Only set pixel if it's visible (a > 0)
                 if (a > 0) {
                     setPixel(x + offsetX, y, a / 255); // Offset to place the image correctly
                 }
             }
         }
     }
+
 
     function drawScreen() {
         // Directly draw images
@@ -146,7 +143,7 @@ async function displayImage() {
         const duration = endTime - startTime; // Calculate the duration in milliseconds
 
         console.log(`drawScreen took ${duration.toFixed(2)}ms`);
-    }, 20);
+    }, 40);
 
 
 }

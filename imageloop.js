@@ -27,7 +27,7 @@ class ImageLoop {
         if (!this.intervalId) {
             this.intervalId = setInterval(async () => {
                 await this.Loop();
-            }, 1000 / 30); // 30fps hopefully
+            }, 1000 / 15); // 30fps hopefully
         }
     }
 
