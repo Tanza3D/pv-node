@@ -129,7 +129,17 @@ async function displayImage() {
         matrix.sync();
     }
 
-    draw = setInterval(drawScreen, 20); // that'll do
+    draw = setInterval(() => {
+        const startTime = performance.now();  // Start time before the function call
+
+        drawScreen();
+
+        const endTime = performance.now();    // End time after the function call
+        const duration = endTime - startTime; // Calculate the duration in milliseconds
+
+        console.log(`drawScreen took ${duration.toFixed(2)}ms`);
+    }, 20);
+
 }
 
 displayImage().catch(console.error);
