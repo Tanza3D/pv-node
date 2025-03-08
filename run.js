@@ -92,6 +92,10 @@ async function displayImage() {
 
         var col = preprocessedGradient[y][x];
 
+        col.r = col.r*a;
+        col.g = col.g*a;
+        col.b = col.b*a;
+
         matrix.fgColor(col).setPixel(x, y);
         // the width is 128x32, but we actually have two 64x32 panels.
         // this function only ever takes 64x32 X/Y coords, we need to mirror to other side
