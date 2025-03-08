@@ -104,26 +104,34 @@ async function displayImage() {
         matrix.fgColor(col).setPixel(128 - x, y);
     }
     function drawImage(img, offsetX) {
-        if(img == null) {
+        if (img == null) {
             return;
-            // one day, far away
-            // no function will return null
-            // til then, we will check
-
-            // Tanza, 2025
         }
 
-        for (let y = 0; y < 32; y++) {
-            for (let x = 0; x < 64; x++) {
-                const {r, g, b, a} = JimpR.intToRGBA(img.getPixelColor(x, y));
+        // Directly get pixel data from the image (assuming it's an array or a similar structure)
+        const pixels = img.bitmap.data;  // Using Jimp's bitmap data for faster access
+        const width = img.bitmap.width;
+        const height = img.bitmap.height;
+
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                // Get pixel index in bitmap data (4 bytes per pixel: RGBA)
+                const idx = (y * width + x) * 4;
+                const r = pixels[idx];
+                const g = pixels[idx + 1];
+                const b = pixels[idx + 2];
+                const a = pixels[idx + 3];
+
+                // Only set pixel if it's visible (a > 0)
                 if (a > 0) {
-                    setPixel(x, y, a/255);
+                    setPixel(x + offsetX, y, a / 255); // Offset to place the image correctly
                 }
             }
         }
     }
 
     function drawScreen() {
+        // Directly draw images
         drawImage(eyes.GetImage(), 0);
         drawImage(face.GetImage(), 64);
         matrix.sync();
@@ -139,6 +147,7 @@ async function displayImage() {
 
         console.log(`drawScreen took ${duration.toFixed(2)}ms`);
     }, 20);
+
 
 }
 
