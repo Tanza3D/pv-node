@@ -43,7 +43,6 @@ const matrix = new LedMatrix({
     cols: 64,
     chainLength: 2,
     hardwareMapping: GpioMapping.AdafruitHat,
-    limitRefreshRateHz: 30,
     showRefreshRate: true
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
