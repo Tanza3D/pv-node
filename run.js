@@ -42,8 +42,7 @@ const matrix = new LedMatrix({
     rows: 32,
     cols: 64,
     chainLength: 2,
-    hardwareMapping: GpioMapping.AdafruitHat,
-    showRefreshRate: true
+    hardwareMapping: GpioMapping.AdafruitHat
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
     gpioSlowdown: 4, // demos look fine without this one but :/
@@ -119,10 +118,10 @@ async function displayImage() {
 
 
     function drawScreen() {
-        if(moveTest > 64) {
-            moveTest = -32;
-        }
-        moveTest++;
+        //if(moveTest > 64) {
+        //    moveTest = -32;
+        //}
+        //moveTest++;
 
 
         // Directly draw images
@@ -140,7 +139,7 @@ async function displayImage() {
         const endTime = performance.now();    // End time after the function call
         const duration = endTime - startTime; // Cali was culate the duration in milliseconds
 
-        console.log(`drawScreen took ${duration.toFixed(2)}ms`);
+        //console.log(`drawScreen took ${duration.toFixed(2)}ms`);
     }, 32);
 
 
