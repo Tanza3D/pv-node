@@ -46,7 +46,7 @@ const matrix = new LedMatrix({
     disableHardwarePulsing: false
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
-    gpioSlowdown: 4,
+    //gpioSlowdown: 4, // demos look fine without this one
     disableHardwarePulsing: false
 }).clear();
 
