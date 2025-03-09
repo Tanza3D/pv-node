@@ -82,14 +82,10 @@ async function displayImage() {
 
     var moveTest = 0;
     function setPixel(x, y, a) {
-        if(moveTest > 50) {
-            moveTest = -50;
-        }
-        moveTest++;
 
         y = (32 - y); // displays are flipped IRL
         x = x + moveTest;
-        
+
         var colx = preprocessedGradient[y][x];
 
         matrix.fgColor({
@@ -102,6 +98,7 @@ async function displayImage() {
     }
 
     function drawImage(img, offsetX) {
+
         if (img == null) {
             return;
         }
@@ -122,6 +119,12 @@ async function displayImage() {
 
 
     function drawScreen() {
+        if(moveTest > 50) {
+            moveTest = -50;
+        }
+        moveTest++;
+
+        
         // Directly draw images
         matrix.clear();
         drawImage(eyes.GetImage(), 0);
