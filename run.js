@@ -119,12 +119,12 @@ async function displayImage() {
 
 
     function drawScreen() {
-        if(moveTest > 50) {
-            moveTest = -50;
+        if(moveTest > 64) {
+            moveTest = -32;
         }
         moveTest++;
 
-        
+
         // Directly draw images
         matrix.clear();
         drawImage(eyes.GetImage(), 0);
