@@ -17,7 +17,7 @@ class Eyes extends ImageLoop {
         await this.LoadEye("sad");
     }
     GetImage() {
-        return this.images[this.currentEye].rotate(0.01).resize({w: 64, h: 32});
+        return this.images[this.currentEye];
     }
 }
 

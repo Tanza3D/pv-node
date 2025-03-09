@@ -63,23 +63,15 @@ process.on('SIGINT', function () {
 });
 
 
-
-
 // ACTUAL DISPLAY CODE LOL
 async function displayImage() {
+    const width = 64;
+    const height = 32
     var eyes = new Eyes();
     var face = new Face();
 
     await eyes._Init();
     await face._Init();
-
-    const image = await Jimp.read('v1.png');
-    image.resize({w: 64, h: 32});
-    image.flip({vertical: true, horizontal: false}); // Flip vertically
-
-    const imageM = image.clone().flip({vertical: false, horizontal: true}); // Mirror horizontally
-
-
 
     var gradientMap = [
         [{r: 255, g: 100, b: 190}, {r: 200, g: 100, b: 255}],
@@ -94,25 +86,21 @@ async function displayImage() {
 
         var colx = preprocessedGradient[y][x];
 
-        var col = {
-            r: colx.r*a,
-            g: colx.g*a,
-            b: colx.b*a
-        }
-
-        matrix.fgColor(col).setPixel(x, y);
-        // the width is 128x32, but we actually have two 64x32 panels.
-        // this function only ever takes 64x32 X/Y coords, we need to mirror to other side
-        matrix.setPixel(128 - x, y);
+        matrix.fgColor({
+            r: colx.r * a,
+            g: colx.g * a,
+            b: colx.b * a
+        })
+            .setPixel(x, y)
+            .setPixel(128 - x, y);
     }
+
     function drawImage(img, offsetX) {
         if (img == null) {
             return;
         }
 
-        const pixels = img.bitmap.data;  // Using Jimp's bitmap data for faster access
-        const width = img.bitmap.width;
-        const height = img.bitmap.height;
+        const pixels = img.bitmap.data;
 
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {

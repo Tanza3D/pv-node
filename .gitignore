@@ -1,1 +1,4 @@
 node_modules
+dist
+*.mp4
+viseME/
