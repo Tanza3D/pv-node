@@ -87,9 +87,9 @@ async function displayImage() {
         var colx = preprocessedGradient[y][x];
 
         matrix.fgColor({
-            r: Math.round(colx.r * a),
-            g: Math.round(colx.g * a),
-            b: Math.round(colx.b * a)
+            r: 255,
+            g: 0,
+            b: 255
         })
             .setPixel(x, y)
             .setPixel(128 - x, y);
