@@ -131,7 +131,7 @@ async function displayImage() {
         const duration = endTime - startTime; // Cali was culate the duration in milliseconds
 
         console.log(`drawScreen took ${duration.toFixed(2)}ms`);
-    }, 16);
+    }, 32);
 
 
 }
