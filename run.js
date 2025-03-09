@@ -43,11 +43,11 @@ const matrix = new LedMatrix({
     cols: 64,
     chainLength: 2,
     hardwareMapping: GpioMapping.AdafruitHat,
-    disableHardwarePulsing: false
+    limitRefreshRateHz: 30,
+    showRefreshRate: true
 }, {
     ...LedMatrix.defaultRuntimeOptions(),
-    //gpioSlowdown: 4, // demos look fine without this one
-    disableHardwarePulsing: false
+    gpioSlowdown: 4, // demos look fine without this one but :/
 }).clear();
 
 var draw = null;
