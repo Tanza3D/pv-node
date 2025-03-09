@@ -80,9 +80,16 @@ async function displayImage() {
 
     var preprocessedGradient = preprocessGradient(gradientMap, 65, 33);
 
+    var moveTest = 0;
     function setPixel(x, y, a) {
-        y = (32 - y); // displays are flipped IRL
+        if(moveTest > 50) {
+            moveTest = -50;
+        }
+        moveTest++;
 
+        y = (32 - y); // displays are flipped IRL
+        x = x + moveTest;
+        
         var colx = preprocessedGradient[y][x];
 
         matrix.fgColor({
