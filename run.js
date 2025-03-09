@@ -82,14 +82,15 @@ async function displayImage() {
     var preprocessedGradient = preprocessGradient(gradientMap, 65, 33);
 
     function setPixel(x, y, a) {
+        a = a/255;
         y = (32 - y); // displays are flipped IRL
 
         var colx = preprocessedGradient[y][x];
 
         matrix.fgColor({
-            r: colx.r * a,
-            g: colx.g * a,
-            b: colx.b * a
+            r: Math.round(colx.r * a),
+            g: Math.round(colx.g * a),
+            b: Math.round(colx.b * a)
         })
             .setPixel(x, y)
             .setPixel(128 - x, y);
@@ -117,6 +118,7 @@ async function displayImage() {
 
     function drawScreen() {
         // Directly draw images
+        matrix.clear();
         drawImage(eyes.GetImage(), 0);
         drawImage(face.GetImage(), 64);
         matrix.sync();
@@ -128,10 +130,10 @@ async function displayImage() {
         drawScreen();
 
         const endTime = performance.now();    // End time after the function call
-        const duration = endTime - startTime; // Calculate the duration in milliseconds
+        const duration = endTime - startTime; // Cali was culate the duration in milliseconds
 
         console.log(`drawScreen took ${duration.toFixed(2)}ms`);
-    }, 7);
+    }, 16);
 
 
 }
